@@ -12,6 +12,7 @@ Tenemos por aca un proyecto que basicametne sera para una Network de minecraft y
 - Keep in mind that we’re using pnpm for this project
 - Remember that we’re using Tailwind CSS in this project, so avoid writing custom CSS unless it’s genuinely necessary. Custom CSS makes sense when implementing the same thing with Tailwind 4.3.3 would be excessively complex or impractical. For everything else, please use Tailwind properly and consistently. 
 - Keep in mind that we're using GSAP for this project 3.15.0
+- No delegues a subagentes hacelo todo en el mismo chat
 
 ## Development
 

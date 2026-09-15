@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-clash-display);
+  --font-minecraft: var(--font-minecraft-seven);
+}
