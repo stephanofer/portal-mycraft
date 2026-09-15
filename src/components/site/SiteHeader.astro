@@ -6,59 +6,61 @@ import { site } from "@/lib/site";
 
 const navigation = [
     { label: "Inicio", href: "/", current: Astro.url.pathname === "/" },
-    { label: "Cómo jugar", href: "/#como-jugar", current: false },
-    { label: "Comunidad", href: "/#comunidad", current: false },
+    { label: "Tienda", href: site.storeUrl, current: false },
 ];
 ---
 
 <div data-site-navigation>
-<header data-site-header class="relative z-30 bg-canvas">
-    <div class="mx-auto flex min-h-22 max-w-7xl items-center justify-between gap-3 px-5 sm:min-h-26 sm:gap-5 sm:px-8">
-        <SiteBrand />
+    <header data-site-header class="relative z-30 bg-canvas">
+        <div class="mx-auto flex min-h-22 max-w-7xl items-center justify-between gap-3 px-5 sm:min-h-26 sm:gap-5 sm:px-8">
+            <SiteBrand />
 
-        <nav aria-label="Navegación principal" class="hidden lg:block">
-            <ul class="flex items-center gap-1 xl:gap-3">
-                {navigation.map(({ label, href, current }) => (
-                    <li>
-                        <a
-                            href={href}
-                            aria-current={current ? "page" : undefined}
-                            class:list={[
-                                "inline-flex min-h-11 items-center rounded-lg px-4 text-sm font-medium transition-colors duration-150 hover:bg-white/5 hover:text-white motion-reduce:transition-none",
-                                current
-                                    ? "bg-white/6 text-white"
-                                    : "text-muted",
-                            ]}
-                        >
-                            {label}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        </nav>
+            <nav aria-label="Navegación principal" class="hidden lg:block">
+                <ul class="flex items-center gap-1 xl:gap-3">
+                    {navigation.map(({ label, href, current }) => (
+                        <li>
+                            <a
+                                href={href}
+                                aria-current={current ? "page" : undefined}
+                                class:list={[
+                                    "inline-flex min-h-11 items-center rounded-lg px-4 text-sm font-medium transition-colors duration-150 hover:bg-white/5 hover:text-white motion-reduce:transition-none",
+                                    current
+                                        ? "bg-white/6 text-white"
+                                        : "text-muted",
+                                ]}
+                            >
+                                {label}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
 
-        <div class="flex items-center gap-2 sm:gap-3">
-            <a
-                href={site.discordUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Únete a nuestro Discord (se abre en otra pestaña)"
-                class="hidden size-11 shrink-0 place-items-center rounded-lg border border-discord/25 bg-discord/15 text-discord-light transition-colors duration-150 hover:border-discord/50 hover:bg-discord/25 hover:text-white motion-reduce:transition-none sm:grid sm:size-12"
-            >
-                <DiscordLogo
-                    class="size-6"
-                    fill="currentColor"
-                    aria-hidden="true"
-                />
-            </a>
-            <div class="hidden md:block">
-                <slot name="server-controls" />
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a
+                    href={site.discordUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Únete a nuestro Discord (se abre en otra pestaña)"
+                    class="hidden size-11 shrink-0 place-items-center rounded-lg border border-discord/25 bg-discord/15 text-discord-light transition-colors duration-150 hover:border-discord/50 hover:bg-discord/25 hover:text-white motion-reduce:transition-none sm:grid sm:size-12"
+                >
+                    <DiscordLogo
+                        class="size-6"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    />
+                </a>
+                <div class="hidden md:block">
+                    <slot name="server-controls" />
+                </div>
+
+                <MobileNavigation items={navigation}>
+                    <slot
+                        name="mobile-server-controls"
+                        slot="server-controls"
+                    />
+                </MobileNavigation>
             </div>
-
-            <MobileNavigation items={navigation}>
-                <slot name="mobile-server-controls" slot="server-controls" />
-            </MobileNavigation>
         </div>
-    </div>
-</header>
+    </header>
 </div>

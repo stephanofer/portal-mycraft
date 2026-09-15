@@ -5,9 +5,7 @@ import { site } from "@/lib/site";
 
 const navigation = [
     { label: "Inicio", href: "/" },
-    { label: "Cómo jugar", href: "/#como-jugar" },
-    { label: "Comunidad", href: "/#comunidad" },
-    { label: "Tienda", href: "/#tienda" },
+    { label: "Tienda", href: site.storeUrl },
 ];
 ---
 
@@ -17,12 +15,18 @@ const navigation = [
             <div class="flex flex-col items-center text-center lg:items-start lg:text-left">
                 <SiteBrand />
                 <p class="mt-4 max-w-82 text-sm leading-6 text-muted">
-                    Un mundo para explorar, competir y construir historias junto a una comunidad que nunca deja de crecer.
+                    Un mundo para explorar, competir y construir historias junto
+                    a una comunidad que nunca deja de crecer.
                 </p>
             </div>
 
-            <nav class="text-center lg:text-left" aria-label="Navegación del pie de página">
-                <p class="text-xs font-semibold tracking-[0.16em] text-white uppercase">Explora</p>
+            <nav
+                class="text-center lg:text-left"
+                aria-label="Navegación del pie de página"
+            >
+                <p class="text-xs font-semibold tracking-[0.16em] text-white uppercase">
+                    Explora
+                </p>
                 <ul class="mx-auto mt-5 grid max-w-64 grid-cols-2 gap-x-5 gap-y-3 text-sm text-muted lg:mx-0 lg:grid-cols-1">
                     {navigation.map(({ label, href }) => (
                         <li>
@@ -38,8 +42,12 @@ const navigation = [
             </nav>
 
             <div class="text-center lg:text-left">
-                <p class="text-xs font-semibold tracking-[0.16em] text-white uppercase">Entra a Mycraft</p>
-                <p class="mt-3 text-sm leading-6 text-muted">Copia la IP y comienza tu aventura en segundos.</p>
+                <p class="text-xs font-semibold tracking-[0.16em] text-white uppercase">
+                    Entra a Mycraft
+                </p>
+                <p class="mt-3 text-sm leading-6 text-muted">
+                    Copia la IP y comienza tu aventura en segundos.
+                </p>
                 <div class="mx-auto mt-5 flex max-w-72 justify-center lg:mx-0 lg:justify-start">
                     <slot name="server-controls" />
                 </div>
@@ -48,8 +56,13 @@ const navigation = [
 
         <div class="flex flex-col items-center gap-7 py-7 text-center lg:flex-row lg:justify-between lg:text-left">
             <div>
-                <p class="text-xs font-semibold tracking-[0.16em] text-white uppercase">Síguenos</p>
-                <ul class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start" aria-label="Redes sociales">
+                <p class="text-xs font-semibold tracking-[0.16em] text-white uppercase">
+                    Síguenos
+                </p>
+                <ul
+                    class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start"
+                    aria-label="Redes sociales"
+                >
                     {site.socials.map(({ name, network, url }) => (
                         <li>
                             <a
@@ -67,7 +80,9 @@ const navigation = [
             </div>
 
             <div class="text-xs leading-5 text-muted lg:text-right">
-                <p>© {new Date().getFullYear()} {site.name}</p>
+                <p>
+                    © {new Date().getFullYear()} {site.name}
+                </p>
                 <p>Hecho para jugar. Construido para compartir.</p>
             </div>
         </div>
