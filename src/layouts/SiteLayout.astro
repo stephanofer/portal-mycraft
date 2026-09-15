@@ -1,5 +1,6 @@
 ---
 import { Font } from "astro:assets";
+import SiteFooter from "@/components/site/SiteFooter.astro";
 import SiteHeader from "@/components/site/SiteHeader.astro";
 import { site } from "@/lib/site";
 import "@/styles/global.css";
@@ -73,11 +74,8 @@ const canonicalUrl = Astro.site
         <main id="contenido" tabindex="-1">
             <slot />
         </main>
-        <footer class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t border-white/8 px-5 py-6 text-xs text-muted sm:flex-row sm:px-8">
-            <p>
-                © {new Date().getFullYear()} {site.name}
-            </p>
-            <p>Hecho para jugar. Construido para compartir.</p>
-        </footer>
+        <SiteFooter>
+            <slot name="footer-server-controls" slot="server-controls" />
+        </SiteFooter>
     </body>
 </html>

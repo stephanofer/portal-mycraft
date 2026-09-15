@@ -1,0 +1,60 @@
+---
+import { Image } from "astro:assets";
+import storeImage from "@/assets/store.webp";
+import Icon from "@/components/ui/Icon.astro";
+import { site } from "@/lib/site";
+---
+
+<section
+    id="tienda"
+    aria-labelledby="store-title"
+    class="relative isolate scroll-mt-8 overflow-hidden bg-surface/55"
+>
+    <div
+        class="pointer-events-none absolute top-1/2 right-[12%] -z-10 size-80 -translate-y-1/2 rounded-full bg-accent/12 blur-3xl"
+        aria-hidden="true"
+    ></div>
+    <div class="mx-auto grid max-w-7xl items-center gap-8 px-5 py-18 sm:px-8 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:py-28">
+        <div class="mx-auto max-w-140 text-center lg:mx-0 lg:text-left">
+            <h2
+                id="store-title"
+                class="mt-5 font-display text-3xl leading-[1.08] font-medium tracking-tight text-white sm:text-4xl lg:text-5xl"
+            >
+                Apoya el servidor. Mejora tu aventura.
+            </h2>
+            <p class="mx-auto mt-5 max-w-128 text-base leading-7 text-muted sm:text-lg sm:leading-8 lg:mx-0">
+                Explora rangos, kits, cosméticos y mejoras pensadas para
+                enriquecer tu experiencia mientras ayudas a que Mycraft siga
+                creciendo.
+            </p>
+            <a
+                href={site.storeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group mt-8 inline-flex min-h-13 items-center gap-3 rounded-xl border border-accent/60 bg-accent px-6 text-sm font-semibold text-canvas shadow-lg shadow-accent/10 transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-accent-hover hover:bg-accent-hover motion-reduce:transform-none motion-reduce:transition-none"
+            >
+                Visitar la tienda
+                <Icon
+                    name="arrow-up-right"
+                    class="size-4 transition-transform duration-150 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-reduce:transition-none"
+                />
+                <span class="sr-only"> (se abre en otra pestaña)</span>
+            </a>
+        </div>
+
+        <div class="relative order-first mx-auto w-full max-w-112 lg:order-last lg:mr-0">
+            <div
+                class="absolute inset-x-12 bottom-4 h-16 rounded-full bg-accent/20 blur-2xl"
+                aria-hidden="true"
+            ></div>
+            <Image
+                src={storeImage}
+                alt="Caja fuerte de Mycraft abierta y llena de monedas doradas"
+                widths={[360, 540, 760]}
+                sizes="(min-width: 1024px) 448px, min(85vw, 448px)"
+                quality={85}
+                class="relative w-full drop-shadow-[0_28px_45px_rgb(0_0_0/0.4)] transition-transform duration-300 ease-out motion-safe:hover:-translate-y-1 motion-reduce:transition-none"
+            />
+        </div>
+    </div>
+</section>

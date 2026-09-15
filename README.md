@@ -18,6 +18,27 @@ pnpm check
 pnpm build
 ```
 
+## Deployment
+
+The static Astro build is deployed with Cloudflare Workers Static Assets. No
+Cloudflare adapter is required because every route is prerendered at build time.
+
+```sh
+pnpm build
+pnpm run deploy
+```
+
+For automatic deployments, connect the GitHub repository to Workers Builds and
+use `main` as the production branch with these commands:
+
+```text
+Build command: pnpm build
+Deploy command: pnpm run deploy
+```
+
+Set `SITE_URL` in the Workers Builds production environment to the final public
+origin so Astro generates canonical and Open Graph URLs.
+
 ## Architecture
 
 - `src/pages/index.astro`: homepage composition, including feature content passed through named slots.

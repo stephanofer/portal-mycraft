@@ -1,0 +1,37 @@
+---
+import DiscordLogo from "@/assets/icons/discord-logo.svg";
+
+interface Props {
+    network: "discord" | "x" | "instagram" | "youtube" | "tiktok";
+    class?: string;
+}
+
+const { network, class: className = "size-5" } = Astro.props;
+---
+
+{
+    network === "discord" ? (
+        <DiscordLogo class={className} fill="currentColor" aria-hidden="true" />
+    ) : (
+        <svg
+            class={className}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+        >
+            {network === "x" && (
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817-5.967 6.817H1.68l7.73-8.835L1.254 2.25h6.826l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
+            )}
+            {network === "instagram" && (
+                <path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6Zm9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+            )}
+            {network === "youtube" && (
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.12C19.55 3.58 12 3.58 12 3.58s-7.55 0-9.4.5A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.12c1.85.5 9.4.5 9.4.5s7.55 0 9.4-.5a3 3 0 0 0 2.1-2.12A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z" />
+            )}
+            {network === "tiktok" && (
+                <path d="M16.6 1.5c.4 2.35 1.72 3.75 4.03 3.9v3.05a8.2 8.2 0 0 1-3.98-1.03v6.1c0 7.75-8.45 10.18-11.85 4.62-2.18-3.58-.85-9.86 5.3-10.1v3.22c-.5.08-1.02.2-1.5.37-1.45.52-2.27 1.5-2.04 3.23.43 3.32 6.56 4.3 6.05-2.18V1.5h3.99Z" />
+            )}
+        </svg>
+    )
+}

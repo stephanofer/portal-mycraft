@@ -1,11 +1,17 @@
 ---
 import SiteLayout from "@/layouts/SiteLayout.astro";
+import CommunityInvite from "@/features/home/components/CommunityInvite.astro";
 import HomeHero from "@/features/home/components/HomeHero.astro";
+import StorePromo from "@/features/home/components/StorePromo.astro";
+import ServerAddressButton from "@/features/play/components/ServerAddressButton.astro";
 import ServerConnection from "@/features/play/components/ServerConnection.astro";
 ---
 
 <SiteLayout>
     <ServerConnection slot="header-controls" />
     <ServerConnection slot="mobile-server-controls" wide />
+    <ServerAddressButton slot="footer-server-controls" compact />
     <HomeHero />
+    <CommunityInvite />
+    <StorePromo />
 </SiteLayout>
