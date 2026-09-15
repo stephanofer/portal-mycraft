@@ -7,6 +7,8 @@ import { site } from "@/lib/site";
 const navigation = [
     { label: "Inicio", href: "/", current: Astro.url.pathname === "/" },
     { label: "Tienda", href: site.storeUrl, current: false },
+    { label: "Estadísticas", href: site.statisticsUrl, current: false },
+    { label: "Sanciones", href: site.sanctionsUrl, current: false },
 ];
 ---
 
