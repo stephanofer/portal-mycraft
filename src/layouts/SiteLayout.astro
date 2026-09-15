@@ -1,0 +1,83 @@
+---
+import { Font } from "astro:assets";
+import SiteHeader from "@/components/site/SiteHeader.astro";
+import { site } from "@/lib/site";
+import "@/styles/global.css";
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = `${site.name} — Tu próxima aventura en Minecraft`,
+    description = site.description,
+} = Astro.props;
+const canonicalUrl = Astro.site
+    ? new URL(Astro.url.pathname, Astro.site)
+    : undefined;
+---
+
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <Font
+            cssVariable="--font-inter"
+            preload={[{ weight: 400, style: "normal" }]}
+        />
+        <Font cssVariable="--font-clash-display" preload />
+        <meta name="description" content={description} />
+        <meta name="theme-color" content="#090b0d" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="es_ES" />
+        <meta property="og:site_name" content={site.name} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta name="twitter:card" content="summary" />
+        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+        {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+        <link rel="icon" href="/favicon.ico" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <title>{title}</title>
+    </head>
+    <body>
+        <a
+            href="#contenido"
+            class="fixed top-3 left-4 z-50 -translate-y-24 rounded-lg bg-accent px-5 py-3 font-medium text-canvas focus:translate-y-0"
+        >
+            Saltar al contenido
+        </a>
+        <SiteHeader>
+            <slot name="header-controls" slot="server-controls" />
+            <slot name="mobile-server-controls" slot="mobile-server-controls" />
+        </SiteHeader>
+        <main id="contenido" tabindex="-1">
+            <slot />
+        </main>
+        <footer class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t border-white/8 px-5 py-6 text-xs text-muted sm:flex-row sm:px-8">
+            <p>
+                © {new Date().getFullYear()} {site.name}
+            </p>
+            <p>Hecho para jugar. Construido para compartir.</p>
+        </footer>
+    </body>
+</html>

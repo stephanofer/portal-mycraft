@@ -1,0 +1,23 @@
+{
+  "name": "Mycraft Network",
+  "short_name": "Mycraft",
+  "description": "Portal oficial de Mycraft Network, una comunidad y servidor de Minecraft.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090b0d",
+  "theme_color": "#090b0d",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

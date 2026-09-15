@@ -1,0 +1,17 @@
+---
+import { Image } from "astro:assets";
+import logo from "@/assets/logo.webp";
+---
+
+<a
+    href="/"
+    class="inline-flex shrink-0 items-center rounded-sm"
+    aria-label="Mycraft Network, inicio"
+>
+    <Image
+        src={logo}
+        alt=""
+        loading="eager"
+        class="h-16 w-auto object-contain sm:h-20"
+    />
+</a>

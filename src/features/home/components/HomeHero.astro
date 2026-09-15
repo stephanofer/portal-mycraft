@@ -1,0 +1,50 @@
+---
+import { Image } from "astro:assets";
+import heroImage from "@/assets/hero.webp";
+---
+
+<div class="relative isolate h-164 overflow-clip sm:h-184 lg:h-182">
+    <div
+        class="hero-artwork pointer-events-none absolute inset-0 -z-10 mx-auto max-w-480"
+        aria-hidden="true"
+    >
+        <Image
+            src={heroImage}
+            alt=""
+            widths={[640, 960, 1280, 1600, 1916]}
+            sizes="(min-width: 1920px) 1920px, (min-width: 1640px) 100vw, (min-width: 1024px) 1640px, (min-width: 640px) 1344px, 1046px"
+            quality={80}
+            priority
+            class="h-full w-full object-cover object-[58%_center] sm:object-center"
+        />
+    </div>
+</div>
+
+<style>
+    .hero-artwork {
+        --hero-fade-width: 38%;
+
+        /* Fade deeply into each axis; intersecting masks reinforce the corners. */
+        --hero-fade-stops:
+            transparent 0,
+            rgb(0 0 0 / 0.15625) calc(var(--hero-fade-width) * 0.25),
+            rgb(0 0 0 / 0.5) calc(var(--hero-fade-width) * 0.5),
+            rgb(0 0 0 / 0.84375) calc(var(--hero-fade-width) * 0.75),
+            #000 var(--hero-fade-width),
+            #000 calc(100% - var(--hero-fade-width)),
+            rgb(0 0 0 / 0.84375) calc(100% - var(--hero-fade-width) * 0.75),
+            rgb(0 0 0 / 0.5) calc(100% - var(--hero-fade-width) * 0.5),
+            rgb(0 0 0 / 0.15625) calc(100% - var(--hero-fade-width) * 0.25),
+            transparent 100%;
+
+        --hero-edge-mask:
+            linear-gradient(to right, var(--hero-fade-stops)),
+            linear-gradient(to bottom, var(--hero-fade-stops));
+
+        -webkit-mask-image: var(--hero-edge-mask);
+        mask-image: var(--hero-edge-mask);
+        -webkit-mask-composite: source-in;
+        mask-composite: intersect;
+        mask-repeat: no-repeat;
+    }
+</style>

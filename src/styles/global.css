@@ -5,3 +5,41 @@
   --font-display: var(--font-clash-display);
   --font-minecraft: var(--font-minecraft-seven);
 }
+
+@theme {
+  --color-canvas: #090b0d;
+  --color-surface: #121518;
+  --color-muted: #a3a6ae;
+  --color-accent: #f5b849;
+  --color-accent-hover: #ffcb70;
+  --color-discord: #7280f5;
+  --color-discord-light: #b0b8ff;
+}
+
+@layer base {
+  html {
+    @apply bg-canvas font-sans text-white antialiased scheme-dark;
+  }
+
+  body {
+    @apply min-w-80;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-4 outline-accent;
+  }
+
+  ::selection {
+    @apply bg-accent text-canvas;
+  }
+
+  button:not(:disabled), summary {
+    @apply cursor-pointer;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      @apply scroll-smooth;
+    }
+  }
+}

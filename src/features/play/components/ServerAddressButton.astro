@@ -1,0 +1,275 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { server } from "@/features/play/data/server";
+
+interface Props {
+    compact?: boolean;
+    fullWidth?: boolean;
+}
+
+const { compact = false, fullWidth = false } = Astro.props;
+const label = compact ? server.address : "Copiar IP y jugar";
+---
+
+<copy-server-address
+    data-address={server.address}
+    data-label={label}
+    class:list={[
+        "relative block",
+        fullWidth ? "w-full" : compact ? "w-55" : "w-full max-w-72 sm:w-64",
+    ]}
+>
+    <button
+        data-copy-button
+        type="button"
+        disabled
+        aria-label={`Copiar la dirección ${server.address}`}
+        class:list={[
+            "group/copy relative flex w-full items-center justify-center gap-3 rounded-xl border border-accent/60 bg-accent font-medium text-canvas shadow-lg shadow-black/10 transition-colors duration-150 hover:bg-accent-hover disabled:cursor-default motion-reduce:transition-none",
+            fullWidth
+                ? "min-h-14 px-4 text-sm"
+                : compact
+                  ? "min-h-12 px-4 text-sm"
+                  : "min-h-15 px-6 text-sm",
+        ]}
+    >
+        <span class="flex flex-col gap-0.5 text-left">
+            <span data-copy-label class="inline-block">
+                {label}
+            </span>
+            {!compact && (
+                <span class="text-[0.65rem] font-normal tracking-wide text-canvas/75">
+                    {server.address}
+                </span>
+            )}
+        </span>
+        <span data-copy-icon>
+            <Icon name="copy" class="size-4" />
+        </span>
+        <span data-success-icon hidden>
+            <Icon name="check" class="size-4" />
+        </span>
+    </button>
+    <span
+        data-copy-feedback
+        role="status"
+        aria-atomic="true"
+        class="sr-only"
+    ></span>
+
+    <div
+        data-manual-copy
+        hidden
+        class="absolute top-full right-0 z-40 mt-3 w-full min-w-55 rounded-xl border border-white/15 bg-surface p-4 text-left shadow-xl shadow-black/40"
+        role="group"
+        aria-label="Copiar dirección manualmente"
+    >
+        <div class="flex items-start justify-between gap-2">
+            <p class="text-xs leading-relaxed text-muted">
+                No se pudo copiar. Selecciona la dirección y cópiala
+                manualmente.
+            </p>
+            <button
+                data-close-manual
+                type="button"
+                aria-label="Cerrar copia manual"
+                class="-mt-2 -mr-2 grid size-11 shrink-0 place-items-center rounded-lg text-muted hover:bg-white/5 hover:text-white"
+            >
+                <Icon name="close" class="size-4" />
+            </button>
+        </div>
+        <input
+            type="text"
+            readonly
+            value={server.address}
+            aria-label="Dirección del servidor"
+            class="mt-3 min-h-11 w-full rounded-lg border border-white/20 bg-canvas px-3 text-sm text-white"
+        />
+    </div>
+</copy-server-address>
+
+<script>
+    import { gsap } from "gsap";
+
+    class CopyServerAddress extends HTMLElement {
+        private controller?: AbortController;
+        private feedbackTimeline?: ReturnType<typeof gsap.timeline>;
+        private resetTimer?: ReturnType<typeof setTimeout>;
+        private copying = false;
+
+        connectedCallback() {
+            this.controller = new AbortController();
+            const { signal } = this.controller;
+            const button =
+                this.querySelector<HTMLButtonElement>("[data-copy-button]");
+            const label = this.querySelector("[data-copy-label]");
+            const feedback = this.querySelector("[data-copy-feedback]");
+            const copyIcon =
+                this.querySelector<HTMLElement>("[data-copy-icon]");
+            const successIcon = this.querySelector<HTMLElement>(
+                "[data-success-icon]",
+            );
+            const manual =
+                this.querySelector<HTMLElement>("[data-manual-copy]");
+            const input = manual?.querySelector("input");
+            const address = this.dataset.address;
+            if (
+                !button ||
+                !label ||
+                !feedback ||
+                !copyIcon ||
+                !successIcon ||
+                !manual ||
+                !input ||
+                !address
+            )
+                return;
+
+            button.disabled = false;
+            const showDefault = () => {
+                label.textContent = this.dataset.label ?? address;
+                copyIcon.hidden = false;
+                successIcon.hidden = true;
+            };
+            const showSuccess = () => {
+                label.textContent = "¡IP copiada!";
+                copyIcon.hidden = true;
+                successIcon.hidden = false;
+            };
+            const reset = () => {
+                this.feedbackTimeline?.kill();
+                this.feedbackTimeline = undefined;
+                gsap.set(label, { clearProps: "all" });
+                showDefault();
+                feedback.textContent = "";
+            };
+            const playSuccessAnimation = () => {
+                const reduceMotion = window.matchMedia(
+                    "(prefers-reduced-motion: reduce)",
+                ).matches;
+
+                if (reduceMotion) {
+                    showSuccess();
+                    this.resetTimer = setTimeout(() => {
+                        reset();
+                        this.copying = false;
+                    }, 2_000);
+                    return;
+                }
+
+                this.feedbackTimeline = gsap.timeline({
+                    defaults: { ease: "power2.out" },
+                    onComplete: () => {
+                        gsap.set(label, { clearProps: "all" });
+                        this.feedbackTimeline = undefined;
+                        this.copying = false;
+                    },
+                });
+
+                this.feedbackTimeline
+                    .to(label, {
+                        autoAlpha: 0,
+                        x: -12,
+                        scale: 0.94,
+                        duration: 0.14,
+                        ease: "power2.in",
+                    })
+                    .add(showSuccess)
+                    .fromTo(
+                        label,
+                        { autoAlpha: 0, x: 12, scale: 0.96 },
+                        {
+                            autoAlpha: 1,
+                            x: 0,
+                            scale: 1,
+                            duration: 0.2,
+                            ease: "power3.out",
+                            immediateRender: false,
+                        },
+                    )
+                    .to(
+                        label,
+                        {
+                            autoAlpha: 0,
+                            x: -10,
+                            scale: 0.95,
+                            duration: 0.14,
+                            ease: "power2.in",
+                        },
+                        "+=1.25",
+                    )
+                    .add(showDefault)
+                    .fromTo(
+                        label,
+                        { autoAlpha: 0, x: 10, scale: 0.96 },
+                        {
+                            autoAlpha: 1,
+                            x: 0,
+                            scale: 1,
+                            duration: 0.2,
+                            ease: "power3.out",
+                            immediateRender: false,
+                        },
+                    );
+            };
+
+            const closeManual = () => {
+                manual.hidden = true;
+                button.focus();
+            };
+
+            button.addEventListener(
+                "click",
+                async () => {
+                    if (this.copying) return;
+                    this.copying = true;
+                    clearTimeout(this.resetTimer);
+                    reset();
+                    manual.hidden = true;
+
+                    try {
+                        if (!navigator.clipboard?.writeText)
+                            throw new Error("Clipboard unavailable.");
+                        await navigator.clipboard.writeText(address);
+                        if (signal.aborted) return;
+                        feedback.textContent =
+                            "Dirección copiada. Abre Minecraft y añádela en Multijugador.";
+                        playSuccessAnimation();
+                    } catch {
+                        if (signal.aborted) return;
+                        feedback.textContent =
+                            "No se pudo copiar automáticamente. La dirección está seleccionada para copiarla manualmente.";
+                        manual.hidden = false;
+                        input.focus();
+                        input.select();
+                        this.copying = false;
+                    }
+                },
+                { signal },
+            );
+
+            this.querySelector("[data-close-manual]")?.addEventListener(
+                "click",
+                closeManual,
+                { signal },
+            );
+            this.addEventListener(
+                "keydown",
+                (event) => {
+                    if (event.key === "Escape" && !manual.hidden) closeManual();
+                },
+                { signal },
+            );
+            input.addEventListener("click", () => input.select(), { signal });
+        }
+
+        disconnectedCallback() {
+            this.controller?.abort();
+            this.feedbackTimeline?.kill();
+            clearTimeout(this.resetTimer);
+        }
+    }
+
+    if (!customElements.get("copy-server-address"))
+        customElements.define("copy-server-address", CopyServerAddress);
+</script>

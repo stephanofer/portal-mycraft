@@ -1,0 +1,60 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<server-status data-compact={compact ? '' : undefined} data-state="loading" class:list={[
+  'group/status inline-flex min-h-5 items-center justify-center gap-2 text-xs text-muted',
+  { 'text-[0.65rem]': compact },
+]}>
+  <span aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-muted/70 group-data-[state=online]/status:bg-emerald-400 group-data-[state=offline]/status:bg-red-400 group-data-[state=error]/status:bg-amber-400"></span>
+  <span data-status-text role={compact ? undefined : 'status'} aria-atomic="true">Estado del servidor</span>
+</server-status>
+
+<script>
+  import { subscribeToServerStatus } from '@/features/play/services/server-status';
+
+  class ServerStatusElement extends HTMLElement {
+    private unsubscribe?: () => void;
+
+    connectedCallback() {
+      const text = this.querySelector('[data-status-text]');
+      if (!text) return;
+      const compact = this.hasAttribute('data-compact');
+      const number = new Intl.NumberFormat('es-ES');
+
+      this.unsubscribe = subscribeToServerStatus((status) => {
+        this.dataset.state = status.state;
+        let label: string;
+
+        switch (status.state) {
+          case 'online':
+            label = `${number.format(status.players)} ${status.players === 1 ? 'jugador conectado' : 'jugadores conectados'}`;
+            this.title = `${number.format(status.players)} de ${number.format(status.capacity)} plazas · Estado proporcionado por MCStatus`;
+            break;
+          case 'offline':
+            label = compact ? 'Servidor desconectado' : 'Servidor desconectado · Puedes guardar la IP';
+            this.title = 'MCStatus informa que el servidor está desconectado.';
+            break;
+          case 'error':
+            label = compact ? 'Estado no disponible' : 'No pudimos consultar el estado · Intenta entrar al servidor';
+            this.title = 'La consulta falló. Esto no significa que el servidor esté desconectado. Se reintentará automáticamente.';
+            break;
+          default:
+            label = 'Consultando servidor…';
+        }
+
+        if (text.textContent !== label) text.textContent = label;
+      });
+    }
+
+    disconnectedCallback() {
+      this.unsubscribe?.();
+    }
+  }
+
+  if (!customElements.get('server-status')) customElements.define('server-status', ServerStatusElement);
+</script>

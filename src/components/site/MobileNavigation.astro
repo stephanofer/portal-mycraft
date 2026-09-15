@@ -1,0 +1,168 @@
+---
+import DiscordLogo from "@/assets/icons/discord-logo.svg";
+import Icon from "@/components/ui/Icon.astro";
+import { site } from "@/lib/site";
+
+interface Props {
+    items: { label: string; href: string; current: boolean }[];
+}
+
+const { items } = Astro.props;
+---
+
+<mobile-navigation class="block lg:hidden">
+    <button
+        data-menu-trigger
+        type="button"
+        hidden
+        aria-haspopup="dialog"
+        aria-controls="mobile-navigation-panel"
+        aria-expanded="false"
+        class="group inline-flex min-h-11 w-24 items-center justify-center gap-3 rounded-full border border-white/15 bg-white/3 px-3 text-xs font-medium text-white transition-colors duration-150 hover:border-accent/40 hover:bg-white/7 motion-reduce:transition-none sm:min-h-12"
+    >
+        <span data-menu-label>Menú</span>
+        <svg
+            class="size-5 shrink-0 text-accent"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            aria-hidden="true"
+        >
+            <path data-menu-line-top d="M3 6.5h14" />
+            <path data-menu-line-bottom d="M3 13.5h14" />
+        </svg>
+    </button>
+
+    <div
+        data-menu-panel
+        id="mobile-navigation-panel"
+        hidden
+        class="fixed inset-x-0 top-(--mobile-menu-top) z-20 h-[calc(100dvh_-_var(--mobile-menu-top))] overflow-hidden border-t border-white/8 text-white"
+    >
+        <div
+            data-menu-scrim
+            aria-hidden="true"
+            class="absolute inset-0 bg-black/65"
+        ></div>
+        <div
+            data-menu-sheet
+            class="relative flex h-full flex-col overflow-hidden bg-canvas"
+        >
+            <div
+                data-menu-scroll
+                class="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col overflow-y-auto overscroll-contain px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-12"
+            >
+                <nav
+                    aria-labelledby="mobile-navigation-title"
+                    class="shrink-0 py-6 sm:py-8"
+                >
+                    <h2 id="mobile-navigation-title" class="sr-only">
+                        Navegación principal
+                    </h2>
+                    <ul>
+                        {items.map(({ label, href, current }) => (
+                            <li
+                                data-menu-reveal
+                                class="border-b border-white/10"
+                            >
+                                <a
+                                    href={href}
+                                    aria-current={current ? "page" : undefined}
+                                    class:list={[
+                                        "group flex min-h-16 items-center gap-4 rounded-sm py-4 transition-colors duration-150 hover:text-accent motion-reduce:transition-none sm:min-h-18",
+                                        current ? "text-accent" : "text-white",
+                                    ]}
+                                >
+                                    <span class="font-display text-xl leading-tight font-medium tracking-tight sm:text-2xl">
+                                        {label}
+                                    </span>
+                                    <Icon
+                                        name="arrow-right"
+                                        class="ml-auto size-4 shrink-0 text-muted transition-colors group-hover:text-accent motion-reduce:transition-none"
+                                    />
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+
+                <div
+                    data-menu-reveal
+                    class="relative z-10 mt-auto flex w-full shrink-0 items-start gap-3 pt-6 pb-6"
+                >
+                    <a
+                        href={site.discordUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Únete a nuestro Discord (se abre en otra pestaña)"
+                        class="grid size-14 shrink-0 place-items-center rounded-xl border border-discord/25 bg-discord/15 text-discord-light transition-colors duration-150 hover:border-discord/50 hover:bg-discord/25 hover:text-white motion-reduce:transition-none"
+                    >
+                        <DiscordLogo
+                            class="size-7"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        />
+                    </a>
+                    <slot name="server-controls" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <noscript>
+        <details class="relative">
+            <summary class="inline-flex min-h-11 cursor-pointer list-none items-center rounded-full border border-white/15 px-4 text-xs text-white [&::-webkit-details-marker]:hidden">
+                Menú
+            </summary>
+            <nav
+                aria-label="Navegación móvil"
+                class="absolute top-full right-0 z-40 mt-3 w-64 rounded-xl border border-white/15 bg-surface p-3 shadow-xl"
+            >
+                {items.map(({ label, href, current }) => (
+                    <a
+                        href={href}
+                        aria-current={current ? "page" : undefined}
+                        class="flex min-h-12 items-center rounded-lg px-4 text-sm text-white hover:bg-white/6"
+                    >
+                        {label}
+                    </a>
+                ))}
+                <a
+                    href={site.discordUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Discord (se abre en otra pestaña)"
+                    class="grid size-12 place-items-center rounded-lg text-discord-light hover:bg-white/6"
+                >
+                    <DiscordLogo
+                        class="size-6"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    />
+                </a>
+            </nav>
+        </details>
+    </noscript>
+</mobile-navigation>
+
+<script>
+    import { initializeMobileNavigation } from "@/components/site/mobile-navigation";
+
+    class MobileNavigation extends HTMLElement {
+        private cleanup?: () => void;
+
+        connectedCallback() {
+            this.cleanup = initializeMobileNavigation(this);
+        }
+
+        disconnectedCallback() {
+            this.cleanup?.();
+        }
+    }
+
+    if (!customElements.get("mobile-navigation")) {
+        customElements.define("mobile-navigation", MobileNavigation);
+    }
+</script>

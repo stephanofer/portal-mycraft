@@ -1,0 +1,19 @@
+---
+import DiscordLogo from '@/assets/icons/discord-logo.svg';
+import Icon from '@/components/ui/Icon.astro';
+import { site } from '@/lib/site';
+---
+
+<section id="comunidad" aria-labelledby="community-title" class="mx-auto max-w-7xl scroll-mt-8 px-5 pb-14 sm:px-8 sm:pb-20">
+  <a href={site.discordUrl} target="_blank" rel="noopener noreferrer" class="group flex flex-col items-start gap-6 rounded-2xl border border-discord/20 bg-linear-to-r from-discord/10 to-discord/3 p-6 transition-colors duration-200 hover:border-discord/45 hover:bg-discord/8 motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between sm:p-8">
+    <div class="flex items-center gap-5">
+      <span class="grid size-14 shrink-0 place-items-center rounded-xl border border-discord/25 bg-discord/15 text-discord-light"><DiscordLogo class="size-8" fill="currentColor" aria-hidden="true" /></span>
+      <div>
+        <p class="text-[0.65rem] font-medium tracking-[0.16em] text-discord-light uppercase">Mejor en compañía</p>
+        <h2 id="community-title" class="mt-2 font-display text-xl leading-tight font-medium tracking-tight text-white sm:text-2xl">El juego termina. La comunidad sigue.</h2>
+        <p class="mt-2 text-sm leading-relaxed text-muted">Encuentra a tu equipo y comparte tu próxima aventura.</p>
+      </div>
+    </div>
+    <span class="inline-flex min-h-11 shrink-0 items-center gap-3 text-sm font-medium text-white">Unirme a Discord<Icon name="arrow-up-right" class="size-5 transition-transform duration-150 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-reduce:transition-none" /><span class="sr-only"> (se abre en otra pestaña)</span></span>
+  </a>
+</section>

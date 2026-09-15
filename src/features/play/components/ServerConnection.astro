@@ -1,0 +1,17 @@
+---
+import ServerAddressButton from "@/features/play/components/ServerAddressButton.astro";
+import ServerStatus from "@/features/play/components/ServerStatus.astro";
+
+interface Props {
+    wide?: boolean;
+}
+
+const { wide = false } = Astro.props;
+---
+
+<div class:list={["relative", wide ? "min-w-0 flex-1" : "w-55"]}>
+    <ServerAddressButton compact fullWidth={wide} />
+    <div class="absolute inset-x-0 top-full mt-1 flex justify-center">
+        <ServerStatus compact />
+    </div>
+</div>
